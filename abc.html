@@ -1,0 +1,69 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>无标题文档</title>
+	<style>
+		*{margin: 0;padding: 0;}
+		body{background: skyblue;}
+		#ul1 {width: 510px; margin: 100px auto 0; position: relative;}
+		li {width: 150px; height: 150px; float: left; list-style: none; 
+		margin: 20px 0 0 20px; opacity: 0.3; filter:alpha(opacity=30);}
+		img {width: 100%; height: 100%;}
+	</style>
+	</head>
+	<body>
+		<ul id="ul1">
+	    	<li></li>
+	        <li></li>
+	        <li></li>
+	        <li></li>
+	        <li></li>
+	        <li></li>
+	        <li></li>
+	        <li></li>
+	        <li></li>
+	    </ul>
+	</body>
+	<script src="tool.js"></script>
+	<script type="text/javascript">
+		var oUl=document.getElementById("ul1");
+		var aLi=oUl.getElementsByTagName("li");
+		//遍历每个li的位置
+		for(var i=0; i<aLi.length; i++){
+			//每个li的坐标位置
+			aLi[i].style.left=aLi[i].offsetLeft+"px";
+			aLi[i].style.top=aLi[i].offsetTop+"px";
+			aLi[i].innerHTML='<img src="img/'+ (i+1) +'.jpg" />';
+		}
+		//把每个li做好定位，这样就不用每个都定位了;
+		for(var i=0; i<aLi.length; i++){
+			//定位后会产生margin值
+			aLi[i].style.position="absolute";
+			aLi[i].style.margin="0";
+		}
+		
+		for(var i=0; i<aLi.length; i++){
+			aLi[i].index=i;//添加索引
+			aLi[i].style.zIndex=1;
+			//记录li的最终初始大小
+			aLi[i].L=parseInt( getStyle(aLi[i],"left") );
+			aLi[i].T=parseInt( getStyle(aLi[i],"top") );
+			//图片划上事件	
+			aLi[i].onmouseover=function(){
+				var _this=this;
+				this.style.zIndex=2;
+				clearInterval(this.timer);
+				Move(this,{"width":280,"height":280,"left":this.L-50,"top":this.T-50,"opacity":100});
+				//图片移出事件
+				aLi[this.index].onmouseout=function(){
+					_this.style.zIndex=1;
+					clearInterval(_this.timer);
+					Move(_this,{"width":150,"height":150,"left":_this.L,"top":_this.T,"opacity":40});
+				}
+				return false;
+			}
+		}
+		
+	</script>
+</html>
